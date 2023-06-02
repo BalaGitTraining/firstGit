@@ -1,0 +1,6 @@
+My Skills:
+c
+Java
+HTML
+CSS
+JS
