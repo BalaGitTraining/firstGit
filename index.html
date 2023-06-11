@@ -15,6 +15,51 @@ itemsByClassName[4].textContent = 'Edited Item'; // Modifying the text of the 5t
 // Using getElementsByTagName
 var itemsByTagName = document.getElementsByTagName('li');
 itemsByTagName[4].textContent = 'Modified Item'; // Modifying the text of the 5th (index 4) li element
+    // Accessing elements
+const headerTitle = document.getElementById('header-title');
+const itemList = document.getElementById('items');
+
+// Manipulating the DOM
+// 1. parentElement
+const container = itemList.parentElement;
+
+// 2. lastElementChild
+const lastItem = itemList.lastElementChild;
+
+// 3. lastChild
+const lastItemText = itemList.lastChild;
+
+// 4. createElement and appendChild
+const newItem = document.createElement('li');
+newItem.className = 'list-group-item';
+newItem.appendChild(document.createTextNode('Item 5'));
+itemList.appendChild(newItem);
+
+// 5. firstElementChild
+const firstItem = itemList.firstElementChild;
+
+// 6. firstChild
+const firstItemText = itemList.firstChild;
+
+// 7. nextSibling
+const nextItem = lastItem.nextSibling;
+
+// 8. nextElementSibling
+const nextItemElement = lastItem.nextElementSibling;
+
+// 9. previousSibling
+const previousItem = lastItem.previousSibling;
+
+// 10. previousElementSibling
+const previousItemElement = lastItem.previousElementSibling;
+
+// 11. setAttribute
+headerTitle.setAttribute('style', 'color: blue;');
+
+// 12. createTextNode
+const textNode = document.createTextNode('New Text');
+headerTitle.appendChild(textNode);
+
   </script>
   <style>
     #items .list-group-item {
