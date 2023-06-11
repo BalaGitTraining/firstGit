@@ -7,6 +7,15 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
   <title>Item Lister</title>
+  <script>
+    // Using getElementsByClassName
+var itemsByClassName = document.getElementsByClassName('list-group-item');
+itemsByClassName[4].textContent = 'Edited Item'; // Modifying the text of the 5th (index 4) li element
+
+// Using getElementsByTagName
+var itemsByTagName = document.getElementsByTagName('li');
+itemsByTagName[4].textContent = 'Modified Item'; // Modifying the text of the 5th (index 4) li element
+  </script>
   <style>
     #items .list-group-item {
       font-weight: bold;
@@ -35,6 +44,7 @@
       <li class="list-group-item">Item 2</li>
       <li class="list-group-item">Item 3</li>
       <li class="list-group-item">Item 4</li>
+      <li class="list-group-item">Item 5</li>
     </ul>
    </div>
   </div>
