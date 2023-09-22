@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product List</title>
+    <!-- Include necessary CSS styles if needed -->
+</head>
+<body>
+    <h1>Product List</h1>
+
+    <!-- Product entry form -->
+    <form id="product-form">
+        <label for="product-name">Product Name:</label>
+        <input type="text" id="product-name" name="productName" required>
+        <label for="selling-price">Selling Price:</label>
+        <input type="number" id="selling-price" name="sellingPrice" step="0.01" required>
+        <button type="submit">Add Product</button>
+    </form>
+
+    <!-- Product list -->
+    <ul id="product-list">
+        <!-- Display products here -->
+    </ul>
+    <div id="total-price">Total Price: $0.00</div>
+
+    <!-- Include your JavaScript file -->
+    <script >
+      // JavaScript (script.js)
+const API_KEY = '12d894059fa945d6be07437a614dccc6';
+const API_URL = 'https://crudcrud.com/api/' + API_KEY + '/products';
+
+const productForm = document.getElementById('product-form');
+const productNameInput = document.getElementById('product-name');
+const sellingPriceInput = document.getElementById('selling-price');
+const productList = document.getElementById('product-list');
+const totalPriceDisplay = document.getElementById('total-price');
+
+let totalPrice = 0; // Initialize total price to zero
+
+// Function to create a new product record
+function createProductRecord(productName, sellingPrice) {
+    return {
+        productName,
+        sellingPrice: parseFloat(sellingPrice).toFixed(2),
+    };
+}
+
+// Function to display a product in the list
+function displayProduct(product) {
+    const listItem = document.createElement('li');
+    listItem.innerHTML = `
+        ${product.productName} - $${product.sellingPrice}
+        <button class="delete-btn" data-id="${product._id}">Delete</button>
+    `;
+
+    // Add an event listener to the delete button
+    const deleteButton = listItem.querySelector('.delete-btn');
+    deleteButton.addEventListener('click', function () {
+        const productId = product._id;
+        deleteProduct(productId);
+    });
+
+    // Update the total price after adding a new product
+    totalPrice += parseFloat(product.sellingPrice);
+    updateTotalPrice();
+
+    productList.appendChild(listItem);
+}
+
+// Function to calculate and update the total price
+function updateTotalPrice() {
+    totalPriceDisplay.textContent = `Total Price: $${totalPrice.toFixed(2)}`;
+}
+
+// Function to fetch all products and display them
+function fetchProducts() {
+    fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
+            productList.innerHTML = ''; // Clear previous entries
+
+            data.forEach(product => {
+                displayProduct(product);
+            });
+        })
+        .catch(error => console.error('Error fetching products:', error));
+}
+
+// Function to add a new product
+function addProduct(productName, sellingPrice) {
+    const productData = createProductRecord(productName, sellingPrice);
+
+    fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        displayProduct(data); // Display the newly added product
+        productNameInput.value = ''; // Clear the form fields
+        sellingPriceInput.value = '';
+    })
+    .catch(error => console.error('Error adding product:', error));
+}
+
+// Function to delete a product
+function deleteProduct(productId) {
+    fetch(`${API_URL}/${productId}`, {
+        method: 'DELETE',
+    })
+    .then(() => {
+        fetchProducts(); // Refresh the product list after deletion
+    })
+    .catch(error => console.error('Error deleting product:', error));
+}
+
+// Event listener for form submission
+productForm.addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent the form from submitting via HTTP request
+
+    const productName = productNameInput.value;
+    const sellingPrice = sellingPriceInput.value;
+
+    if (productName && sellingPrice) {
+        addProduct(productName, sellingPrice);
+    }
+});
+
+// Initial fetch and display of products
+fetchProducts();
+
+    </script>
+</body>
+</html>
+
+
